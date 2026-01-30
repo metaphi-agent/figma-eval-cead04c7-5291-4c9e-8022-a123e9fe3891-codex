@@ -1,0 +1,48 @@
+{
+  "figma_file_key": "CYzD4VQOYx3cV6eX556OIw",
+  "total_frames": 6,
+  "frames": [
+    {
+      "name": "Dribbble shot - 4",
+      "node_id": "1:81",
+      "gt_image": "Dribbble_shot_-_4.png",
+      "target_route": "/dribbble-shot---4",
+      "page": "File"
+    },
+    {
+      "name": "Dribbble shot - 6",
+      "node_id": "1:88",
+      "gt_image": "Dribbble_shot_-_6.png",
+      "target_route": "/dribbble-shot---6",
+      "page": "File"
+    },
+    {
+      "name": "Profile",
+      "node_id": "1:97",
+      "gt_image": "Profile.png",
+      "target_route": "/profile",
+      "page": "Design Page"
+    },
+    {
+      "name": "Settings / Account / Personal Information / Bio-data",
+      "node_id": "1:306",
+      "gt_image": "Settings_-_Account_-_Personal_Information_-_Bio-data.png",
+      "target_route": "/settings---account---personal-information---bio-data",
+      "page": "Design Page"
+    },
+    {
+      "name": "iPhone XR-XS Max \u2013 26",
+      "node_id": "1:394",
+      "gt_image": "iPhone_XR-XS_Max_-_26.png",
+      "target_route": "/iphone-xr-xs-max---26",
+      "page": "Design Page"
+    },
+    {
+      "name": "Dashboard \u2013 1",
+      "node_id": "1:468",
+      "gt_image": "Dashboard_-_1.png",
+      "target_route": "/dashboard---1",
+      "page": "Design Page"
+    }
+  ]
+}
