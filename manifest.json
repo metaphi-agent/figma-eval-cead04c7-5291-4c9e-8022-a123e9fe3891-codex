@@ -5,7 +5,9 @@
     "Step 2: Export Ground Truth",
     "Step 1: Extract from Figma",
     "Step 5: Scaffold Project",
-    "Step 6: Generate Components"
+    "Step 6: Generate Components",
+    "Step 7: Deploy & Push"
   ],
-  "github_repo_url": "https://github.com/metaphi-agent/figma-eval-cead04c7-5291-4c9e-8022-a123e9fe3891-codex"
+  "github_repo_url": "https://github.com/metaphi-agent/figma-eval-cead04c7-5291-4c9e-8022-a123e9fe3891-codex",
+  "deployed_url": "https://storage.googleapis.com/metaphi-agent/figma-eval/cead04c7-5291-4c9e-8022-a123e9fe3891/index.html"
 }
