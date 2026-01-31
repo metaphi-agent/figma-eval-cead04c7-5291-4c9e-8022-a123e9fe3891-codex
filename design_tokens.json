@@ -1,0 +1,41 @@
+{
+  "figma_file_key": "CYzD4VQOYx3cV6eX556OIw",
+  "fonts": {
+    "dm_sans": "DM Sans",
+    "poppins": "Poppins"
+  },
+  "colors": {
+    "bg": "#F9F9F9",
+    "surface": "#FFFFFF",
+    "text": "#181D27",
+    "muted": "#ABABAB",
+    "ink": "#555555",
+    "divider": "#E8E8E8",
+    "line": "#C7CAD3",
+    "primary": "#0601B3",
+    "accent": "#EF4637"
+  },
+  "sources": [
+    {
+      "name": "Frame background",
+      "node_id": "1:97",
+      "rgba": [249, 249, 249, 1]
+    },
+    {
+      "name": "Primary blue (profile header / buttons / accents)",
+      "node_id": "1:135",
+      "rgba": [6, 1, 179, 1]
+    },
+    {
+      "name": "Accent red (dashboard / worker profile highlights)",
+      "node_id": "1:473",
+      "rgba": [239, 70, 55, 1]
+    },
+    {
+      "name": "Primary text",
+      "node_id": "1:132",
+      "rgba": [24, 29, 39, 1]
+    }
+  ]
+}
+

@@ -1,155 +1,183 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import MobileViewport from '../components/layout/MobileViewport'
-import MaskedIcon from '../components/ui/MaskedIcon'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '../components/ui/Button'
+import { Icon } from '../components/ui/Icon'
+import { TextField } from '../components/ui/TextField'
 
-type FieldErrors = Partial<Record<'firstName' | 'lastName' | 'phone' | 'gender' | 'dob', string>>
-
-function TextField({
-  value,
-  onChange,
-  placeholder,
-  rightIcon,
-  leftAdornment,
-  error,
-}: {
-  value: string
-  onChange: (value: string) => void
-  placeholder: string
-  rightIcon?: string
-  leftAdornment?: React.ReactNode
-  error?: string
-}) {
-  return (
-    <div className="w-full">
-      <div className="bg-white px-4 h-[52px] flex items-center gap-3 border border-black/5">
-        {leftAdornment ? <div className="shrink-0">{leftAdornment}</div> : null}
-        <input
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="flex-1 text-[13px] outline-none placeholder:text-[#9A9A9A]"
-        />
-        {rightIcon ? (
-          <MaskedIcon src={rightIcon} className="w-4 h-4 text-[var(--color-primary)]" />
-        ) : null}
-      </div>
-      {error ? <div className="mt-1 text-[11px] text-[var(--color-danger)]">{error}</div> : null}
-    </div>
-  )
-}
+type Errors = Partial<Record<'firstName' | 'lastName' | 'phone' | 'gender' | 'dob', string>>
 
 export default function BioDataPage() {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [gender, setGender] = useState('')
-  const [dob, setDob] = useState('')
+  const navigate = useNavigate()
+  const [values, setValues] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    gender: '',
+    dob: '',
+  })
+  const [errors, setErrors] = useState<Errors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errors, setErrors] = useState<FieldErrors>({})
 
-  const validate = useMemo(() => {
-    return () => {
-      const next: FieldErrors = {}
-      if (!firstName.trim()) next.firstName = 'First name is required'
-      if (!lastName.trim()) next.lastName = 'Last name is required'
-      if (!phone.trim()) next.phone = 'Phone number is required'
-      if (!gender.trim()) next.gender = 'Select your gender'
-      if (!dob.trim()) next.dob = 'Date of birth is required'
-      setErrors(next)
-      return Object.keys(next).length === 0
-    }
-  }, [dob, firstName, gender, lastName, phone])
+  const genderOptions = useMemo(() => ['Female', 'Male', 'Other'], [])
+
+  function validate(next = values) {
+    const nextErrors: Errors = {}
+    if (!next.firstName.trim()) nextErrors.firstName = 'First name is required.'
+    if (!next.lastName.trim()) nextErrors.lastName = 'Last name is required.'
+    if (!next.phone.trim()) nextErrors.phone = 'Phone number is required.'
+    if (!next.gender.trim()) nextErrors.gender = 'Gender is required.'
+    if (!next.dob.trim()) nextErrors.dob = 'Date of birth is required.'
+    return nextErrors
+  }
 
   async function onSubmit() {
-    if (!validate()) return
+    const nextErrors = validate()
+    setErrors(nextErrors)
+    if (Object.keys(nextErrors).length > 0) return
     setIsSubmitting(true)
-    await new Promise((r) => setTimeout(r, 600))
-    setIsSubmitting(false)
+    try {
+      await new Promise((r) => setTimeout(r, 650))
+      navigate('/profile')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <MobileViewport className="bg-white">
-      <div className="px-6 pt-10 pb-10">
-        <div className="flex items-center justify-between">
-          <Link
-            to="/profile"
-            className="w-10 h-10 rounded-full grid place-items-center hover:bg-black/5 active:bg-black/10 transition-colors duration-150"
-            aria-label="Back"
+    <div className="min-h-dvh bg-[color:var(--color-bg)]">
+      <div className="mx-auto w-full max-w-[375px] px-4 pt-6">
+        <header className="relative flex items-center justify-center">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="absolute left-0 inline-flex h-10 w-10 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-primary)]"
+            aria-label="Go back"
           >
-            <span className="text-[20px] leading-none text-[var(--color-ink)]">‹</span>
-          </Link>
-          <div className="text-[14px] font-medium text-[var(--color-ink)]">Bio-data</div>
-          <div className="w-10" />
+            <Icon src="./assets/icons/arrow-left.svg" alt="" size={22} />
+          </button>
+          <h1 className="text-[14px] font-medium text-[color:var(--color-text)]">Bio-data</h1>
+        </header>
+
+        <div className="mt-8 flex flex-col items-center text-center">
+          <img
+            src="./assets/images/avatar-biodata.png"
+            alt="Profile avatar"
+            className="h-[78px] w-[78px] rounded-full object-cover ring-2 ring-[color:var(--color-accent)]"
+          />
+          <p className="mt-4 text-[16px] font-bold text-[color:var(--color-text)]">Itunuoluwa Abidoye</p>
+          <p className="mt-1 text-[13px] text-[color:var(--color-muted)]">Itunuoluwa@petra.africa</p>
         </div>
 
-        <div className="mt-10 flex flex-col items-center">
-          <div className="w-[62px] h-[62px] rounded-full bg-white shadow-[0_10px_30px_rgba(0,0,0,0.12)] grid place-items-center">
+        <form
+          className="mt-10 space-y-0 overflow-hidden rounded-[10px] bg-white shadow-[0_4px_44px_rgba(0,0,0,0.06)]"
+          onSubmit={(e) => {
+            e.preventDefault()
+            onSubmit()
+          }}
+        >
+          <TextField
+            label="First name"
+            placeholder="What’s your first name?"
+            value={values.firstName}
+            onChange={(firstName) => {
+              const next = { ...values, firstName }
+              setValues(next)
+              setErrors((prev) => ({ ...prev, firstName: validate(next).firstName }))
+            }}
+            error={errors.firstName}
+            autoComplete="given-name"
+          />
+          <TextField
+            label="Last name"
+            placeholder="And your last name?"
+            value={values.lastName}
+            onChange={(lastName) => {
+              const next = { ...values, lastName }
+              setValues(next)
+              setErrors((prev) => ({ ...prev, lastName: validate(next).lastName }))
+            }}
+            error={errors.lastName}
+            autoComplete="family-name"
+          />
+          <div className="flex h-[54px] items-center gap-3 bg-white px-4 border-b border-[color:var(--color-divider)] focus-within:border-[color:var(--color-primary)]">
             <img
-              src="./assets/images/avatar.png"
-              alt="User avatar"
-              className="w-[56px] h-[56px] rounded-full object-cover"
+              src="./assets/images/ng-flag.png"
+              alt="Nigeria"
+              className="h-6 w-6 rounded-sm object-cover"
+              loading="lazy"
+            />
+            <input
+              value={values.phone}
+              onChange={(e) => {
+                const phone = e.target.value
+                const next = { ...values, phone }
+                setValues(next)
+                setErrors((prev) => ({ ...prev, phone: validate(next).phone }))
+              }}
+              placeholder="Phone number"
+              inputMode="tel"
+              autoComplete="tel"
+              className="h-full w-full bg-transparent text-[13px] leading-[19.5px] text-[color:var(--color-ink)] outline-none placeholder:text-[color:rgba(85,85,85,0.70)]"
             />
           </div>
+          {errors.phone ? (
+            <p className="px-4 pb-4 text-xs text-[color:var(--color-accent)]">{errors.phone}</p>
+          ) : null}
 
-          <div className="mt-4 text-[16px] font-bold text-[var(--color-ink)]">
-            Itunuoluwa Abidoye
+          <div className="relative">
+            <select
+              value={values.gender}
+              onChange={(e) => {
+                const gender = e.target.value
+                const next = { ...values, gender }
+                setValues(next)
+                setErrors((prev) => ({ ...prev, gender: validate(next).gender }))
+              }}
+              className="h-[54px] w-full appearance-none bg-white px-4 pr-12 text-[13px] leading-[19.5px] text-[color:var(--color-ink)] outline-none border-b border-[color:var(--color-divider)] focus:border-[color:var(--color-primary)]"
+            >
+              <option value="" disabled>
+                Select your gender
+              </option>
+              {genderOptions.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 opacity-70">
+              <Icon src="./assets/icons/chevron-right.svg" alt="" size={12} className="rotate-90" />
+            </div>
           </div>
-          <div className="mt-1 text-[12px] text-black/40">Itunuoluwa@petra.africa</div>
-        </div>
+          {errors.gender ? (
+            <p className="px-4 pb-4 text-xs text-[color:var(--color-accent)]">{errors.gender}</p>
+          ) : null}
 
-        <div className="mt-10 space-y-4">
-          <TextField
-            value={firstName}
-            onChange={setFirstName}
-            placeholder="What's your first name?"
-            error={errors.firstName}
-          />
-          <TextField
-            value={lastName}
-            onChange={setLastName}
-            placeholder="And your last name?"
-            error={errors.lastName}
-          />
+          <div className="flex h-[54px] items-center gap-3 bg-white px-4 border-b border-[color:var(--color-divider)] focus-within:border-[color:var(--color-primary)]">
+            <input
+              value={values.dob}
+              onChange={(e) => {
+                const dob = e.target.value
+                const next = { ...values, dob }
+                setValues(next)
+                setErrors((prev) => ({ ...prev, dob: validate(next).dob }))
+              }}
+              placeholder="What is your date of birth?"
+              inputMode="numeric"
+              className="h-full w-full bg-transparent text-[13px] leading-[19.5px] text-[color:var(--color-ink)] outline-none placeholder:text-[color:rgba(85,85,85,0.70)]"
+            />
+            <Icon src="./assets/icons/calendar.svg" alt="" size={16} />
+          </div>
+          {errors.dob ? (
+            <p className="px-4 pb-4 text-xs text-[color:var(--color-accent)]">{errors.dob}</p>
+          ) : null}
 
-          <TextField
-            value={phone}
-            onChange={setPhone}
-            placeholder="Phone number"
-            error={errors.phone}
-            leftAdornment={
-              <div className="flex items-center gap-2 pr-2 border-r border-black/10">
-                <div className="w-5 h-3 rounded-[2px] bg-gradient-to-r from-green-600 via-white to-green-600 border border-black/10" />
-              </div>
-            }
-          />
-
-          <TextField
-            value={gender}
-            onChange={setGender}
-            placeholder="Select your gender"
-            error={errors.gender}
-            rightIcon="./assets/icons/chevron.svg"
-          />
-
-          <TextField
-            value={dob}
-            onChange={setDob}
-            placeholder="What is your date of birth?"
-            error={errors.dob}
-            rightIcon="./assets/icons/tab-requests.svg"
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={isSubmitting}
-          className="mt-10 w-full h-[54px] rounded-[12px] bg-[var(--color-primary)] text-white font-medium text-[14px] shadow-[0_10px_26px_rgba(6,1,180,0.28)] transition-colors duration-150 disabled:opacity-70"
-        >
-          {isSubmitting ? 'Updating…' : 'Update Profile'}
-        </button>
+          <div className="bg-[color:var(--color-bg)] px-4 py-6">
+            <Button type="submit" isLoading={isSubmitting}>
+              Update Profile
+            </Button>
+          </div>
+        </form>
       </div>
-    </MobileViewport>
+    </div>
   )
 }

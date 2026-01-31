@@ -1,120 +1,171 @@
-import MobileViewport from '../components/layout/MobileViewport'
-import BottomTabBar from '../components/navigation/BottomTabBar'
+import clsx from 'clsx'
+import { Link } from 'react-router-dom'
+import { Icon } from '../components/ui/Icon'
+import type { ReactNode } from 'react'
 
-function MiniHouseCard({
-  label,
-  showPlus,
+function StatCard({
+  tone,
+  title,
+  lines,
 }: {
-  label: string
-  showPlus?: boolean
+  tone: 'soft' | 'accent'
+  title: string
+  lines: ReactNode[]
+}) {
+  const isAccent = tone === 'accent'
+  return (
+    <div
+      className={clsx(
+        'w-full rounded-[14px] p-4',
+        'shadow-[0_10px_30px_rgba(16,24,40,0.10)]',
+        isAccent
+          ? 'bg-[color:var(--color-accent)] text-white'
+          : 'bg-[rgba(239,70,55,0.12)] text-[color:var(--color-text)]',
+      )}
+    >
+      <p className={clsx('text-[11px]', isAccent ? 'text-white/90' : 'text-[color:rgba(24,29,39,0.70)]')}>
+        {title}
+      </p>
+      <div className="mt-2 space-y-1">{lines.map((l, i) => <div key={i}>{l}</div>)}</div>
+    </div>
+  )
+}
+
+function HouseCard({
+  variant,
+  name,
+}: {
+  variant: 'add' | 'person'
+  name: string
 }) {
   return (
-    <div className="w-[78px] h-[92px] bg-white rounded-[10px] shadow-[0_10px_26px_rgba(0,0,0,0.10)] px-2 py-3 flex flex-col items-center justify-between">
-      <div className="w-10 h-10 rounded-full bg-[#F0F0F0] grid place-items-center">
-        {showPlus ? (
-          <div className="w-8 h-8 rounded-full bg-[#F04438] text-white grid place-items-center text-[18px] leading-none">
-            +
-          </div>
-        ) : (
-          <img
-            src="./assets/images/avatar.png"
-            alt=""
-            className="w-8 h-8 rounded-full object-cover"
-            loading="lazy"
-          />
-        )}
-      </div>
-      <div className="text-[11px] text-[var(--color-ink)] font-medium text-center leading-4">
-        <span className="whitespace-pre-line">{label}</span>
-      </div>
+    <div className="flex h-[129px] w-[83px] flex-col items-center justify-center rounded-[14px] bg-white shadow-[0_10px_24px_rgba(16,24,40,0.10)]">
+      {variant === 'add' ? (
+        <div className="flex h-[43px] w-[43px] items-center justify-center rounded-full bg-[color:var(--color-accent)] text-white">
+          <span className="text-xl leading-none">+</span>
+        </div>
+      ) : (
+        <img
+          src="./assets/images/avatar-dashboard.png"
+          alt=""
+          className="h-[43px] w-[43px] rounded-full object-cover"
+          loading="lazy"
+        />
+      )}
+      <p className="mt-3 whitespace-pre-line text-center font-[var(--font-display)] text-[13px] font-medium text-[color:var(--color-text)]">
+        {name}
+      </p>
+    </div>
+  )
+}
+
+function ServicePill({ icon, label }: { icon: string; label: string }) {
+  return (
+    <div className="flex h-[93px] w-full items-center justify-center gap-4 rounded-[18px] bg-white shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
+      <Icon src={icon} alt="" size={42} className="h-[42px] w-auto" />
+      <p className="font-[var(--font-display)] text-[20px] font-medium text-black">{label}</p>
     </div>
   )
 }
 
 export default function DashboardPage() {
   return (
-    <MobileViewport className="bg-white">
-      <div className="px-5 pt-10 pb-[92px]">
-        <div className="flex items-center justify-between">
-          <div className="text-[14px] font-medium text-[var(--color-ink)]">Profile</div>
+    <div className="min-h-dvh bg-white">
+      <div className="mx-auto w-full max-w-[414px] px-5 pt-10">
+        <header className="flex items-center justify-between">
+          <h1 className="font-[var(--font-display)] text-[16px] font-medium text-[color:var(--color-text)]">
+            Profile
+          </h1>
           <button
             type="button"
-            className="w-10 h-10 rounded-full grid place-items-center hover:bg-black/5 active:bg-black/10 transition-colors duration-150"
-            aria-label="Menu"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]"
+            aria-label="Open menu"
           >
-            <div className="space-y-1">
-              <div className="w-4 h-[2px] bg-[#F04438] rounded-full" />
-              <div className="w-4 h-[2px] bg-[#F04438] rounded-full" />
-              <div className="w-4 h-[2px] bg-[#F04438] rounded-full" />
-            </div>
+            <Icon src="./assets/icons/menu.svg" alt="" size={16} />
           </button>
-        </div>
+        </header>
 
-        <div className="mt-6 flex items-center gap-4">
-          <div className="w-[56px] h-[56px] rounded-full bg-[#FFE5E5] grid place-items-center">
-            <img
-              src="./assets/images/avatar.png"
-              alt="User avatar"
-              className="w-[48px] h-[48px] rounded-full object-cover"
-            />
-          </div>
+        <div className="mt-4 flex items-center gap-3">
+          <img
+            src="./assets/images/avatar-dashboard.png"
+            alt="Adewale Taiwo"
+            className="h-[55px] w-[55px] rounded-full object-cover"
+          />
           <div>
-            <div className="text-[18px] font-bold text-[var(--color-ink)] leading-6">
+            <p className="font-[var(--font-display)] text-[20px] text-[color:var(--color-text)]">
               Adewale Taiwo
-            </div>
-            <div className="text-[12px] text-[#F04438]">House Manager</div>
+            </p>
+            <p className="font-[var(--font-display)] text-[14px] text-[color:var(--color-accent)]">
+              House Manager
+            </p>
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="bg-[#FFF0F0] rounded-[16px] shadow-[0_10px_26px_rgba(0,0,0,0.10)] px-5 py-5">
-            <div className="text-[11px] text-black/60 font-medium">Wallet Balance:</div>
-            <div className="mt-1 text-[18px] font-bold text-[#F04438]">$5046.57</div>
-            <div className="mt-3 text-[11px] text-black/60 font-medium">Total Service</div>
-            <div className="mt-1 text-[16px] font-bold text-[#F04438]">24</div>
-          </div>
-
-          <div className="bg-[#F04438] rounded-[16px] shadow-[0_10px_26px_rgba(0,0,0,0.10)] px-5 py-5 text-white">
-            <div className="text-[11px] opacity-90 text-right">Master Card</div>
-            <div className="mt-5 text-[14px] font-bold">5999-XXXX</div>
-            <div className="mt-1 text-[14px] font-bold">Adewale T.</div>
-          </div>
+          <StatCard
+            tone="soft"
+            title="Wallet Balance:"
+            lines={[
+              <p
+                key="v"
+                className="font-[var(--font-display)] text-[20px] font-semibold text-[color:var(--color-accent)]"
+              >
+                $5046.57
+              </p>,
+              <p key="s" className="text-[11px] text-[color:rgba(24,29,39,0.70)]">
+                Total Service
+                <span className="ml-2 font-semibold text-[color:var(--color-text)]">24</span>
+              </p>,
+            ]}
+          />
+          <StatCard
+            tone="accent"
+            title="Master Card"
+            lines={[
+              <p key="n" className="font-[var(--font-display)] text-[16px] font-semibold">
+                5999-XXXX
+              </p>,
+              <p key="u" className="font-[var(--font-display)] text-[16px] font-semibold">
+                Adewale T.
+              </p>,
+            ]}
+          />
         </div>
 
-        <div className="mt-7 flex items-center justify-between">
-          <div className="text-[14px] font-bold text-[var(--color-ink)]">Houses</div>
-        </div>
-
-        <div className="mt-4 flex gap-4">
-          <MiniHouseCard label={'Add\\nWorkers'} showPlus />
-          <MiniHouseCard label={'Tobi\\nLateef'} />
-          <MiniHouseCard label={'Queen\\nNeedle'} />
-          <MiniHouseCard label={'Joan\\nBlessing'} />
-        </div>
-
-        <div className="mt-7 flex items-center justify-between">
-          <div className="text-[14px] font-bold text-[var(--color-ink)]">Services</div>
-          <div className="text-[12px] font-medium text-[#F04438]">All</div>
-        </div>
-
-        <div className="mt-4 space-y-4">
-          <div className="bg-white rounded-[16px] shadow-[0_12px_28px_rgba(0,0,0,0.12)] px-6 py-5 flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#FFF0F0] grid place-items-center">
-              <div className="w-5 h-5 bg-[#F04438] rounded-[4px]" />
+        <div className="relative mt-8">
+          <div className="absolute -right-5 top-0 h-[240px] w-1/2 bg-[rgba(239,70,55,0.10)]" />
+          <div className="relative">
+            <div className="flex items-center justify-between">
+              <h2 className="font-[var(--font-display)] text-[16px] text-[color:var(--color-text)]">
+                Houses
+              </h2>
             </div>
-            <div className="text-[16px] font-bold text-[var(--color-ink)]">Electrical</div>
-          </div>
-
-          <div className="bg-white rounded-[16px] shadow-[0_12px_28px_rgba(0,0,0,0.12)] px-6 py-5 flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#FFF0F0] grid place-items-center">
-              <div className="w-5 h-5 bg-[#F04438] rounded-[4px]" />
+            <div className="mt-4 flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <HouseCard variant="add" name={'Add\nWorkers'} />
+              <HouseCard variant="person" name={'Tobi\nLateef'} />
+              <HouseCard variant="person" name={'Queen\nNeedle'} />
+              <HouseCard variant="person" name={'Joan\nBlessing'} />
             </div>
-            <div className="text-[16px] font-bold text-[var(--color-ink)]">Others</div>
           </div>
+        </div>
+
+        <div className="mt-8 flex items-center justify-between">
+          <h2 className="font-[var(--font-display)] text-[16px] text-[color:var(--color-text)]">
+            Services
+          </h2>
+          <Link
+            to="/profile/worker"
+            className="font-[var(--font-display)] text-[14px] text-[color:var(--color-accent)]"
+          >
+            All
+          </Link>
+        </div>
+
+        <div className="mt-4 space-y-6 pb-12">
+          <ServicePill icon="./assets/icons/electrician.svg" label="Electrical" />
+          <ServicePill icon="./assets/icons/helmet.svg" label="Others" />
         </div>
       </div>
-
-      <BottomTabBar />
-    </MobileViewport>
+    </div>
   )
 }

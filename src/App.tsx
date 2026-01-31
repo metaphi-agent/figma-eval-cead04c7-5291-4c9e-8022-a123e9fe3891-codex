@@ -1,17 +1,23 @@
-import { lazy, Suspense } from 'react'
+import React, { Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const ProfilePage = lazy(() => import('./pages/ProfilePage'))
-const BioDataPage = lazy(() => import('./pages/BioDataPage'))
-const DashboardPage = lazy(() => import('./pages/DashboardPage'))
-const IphoneProfilePage = lazy(() => import('./pages/IphoneProfilePage'))
-const DribbbleShot4Page = lazy(() => import('./pages/DribbbleShot4Page'))
-const DribbbleShot6Page = lazy(() => import('./pages/DribbbleShot6Page'))
+const ProfilePage = React.lazy(() => import('./pages/ProfilePage'))
+const BioDataPage = React.lazy(() => import('./pages/BioDataPage'))
+const WorkerProfilePage = React.lazy(() => import('./pages/WorkerProfilePage'))
+const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
 
 function AppFallback() {
   return (
-    <div className="min-h-screen bg-[var(--color-app-bg)] grid place-items-center">
-      <div className="text-[var(--color-muted)] text-sm">Loading…</div>
+    <div className="min-h-dvh bg-[var(--color-bg)]">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[375px] items-center justify-center px-4">
+        <div className="w-full rounded-[18px] bg-white p-6 text-center shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
+          <div
+            className="mx-auto h-6 w-6 animate-spin rounded-full border-2 border-[color:rgba(6,1,179,0.20)] border-t-[color:var(--color-primary)]"
+            aria-hidden="true"
+          />
+          <p className="mt-3 text-sm text-[color:var(--color-ink)]">Loading…</p>
+        </div>
+      </div>
     </div>
   )
 }
@@ -21,17 +27,10 @@ export default function App() {
     <Suspense fallback={<AppFallback />}>
       <Routes>
         <Route path="/" element={<Navigate to="/profile" replace />} />
-
         <Route path="/profile" element={<ProfilePage />} />
-        <Route
-          path="/settings---account---personal-information---bio-data"
-          element={<BioDataPage />}
-        />
-        <Route path="/dashboard---1" element={<DashboardPage />} />
-        <Route path="/iphone-xr-xs-max---26" element={<IphoneProfilePage />} />
-        <Route path="/dribbble-shot---4" element={<DribbbleShot4Page />} />
-        <Route path="/dribbble-shot---6" element={<DribbbleShot6Page />} />
-
+        <Route path="/settings/bio-data" element={<BioDataPage />} />
+        <Route path="/profile/worker" element={<WorkerProfilePage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="*" element={<Navigate to="/profile" replace />} />
       </Routes>
     </Suspense>
