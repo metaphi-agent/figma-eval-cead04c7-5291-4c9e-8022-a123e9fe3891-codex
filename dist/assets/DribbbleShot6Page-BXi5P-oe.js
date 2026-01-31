@@ -1,1 +1,0 @@
-import{j as e}from"./index-Bs9MX-E1.js";import{M as s}from"./MobileViewport-gHLNA7_X.js";function r(){return e.jsx(s,{className:"bg-[#FFF0F0]",children:e.jsx("div",{className:"min-h-screen flex items-center justify-center px-6",children:e.jsx("img",{src:"./assets/images/dribbble-shot-6.png",alt:"Dribbble shot",className:"w-full h-auto",loading:"lazy"})})})}export{r as default};
